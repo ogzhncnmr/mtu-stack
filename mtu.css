@@ -1,0 +1,143 @@
+/* MTU hesaplayıcı: sitenin ortak styles.css dosyasının üstüne gelir. */
+.mtu {
+  /* Katman kategorileri (sabit sıra: bağlantı, MPLS, tünel, güvenlik, müşteri L2, yük) */
+  --c-link: #2a78d6; --c-mpls: #eb6834; --c-tunnel: #1baf7a; --c-sec: #eda100; --c-cust: #e87ba4; --c-pay: #008300;
+  --ok: #1f7a4f; --warn: #a15c00; --bad: #b3261e;
+}
+[data-theme="dark"] .mtu {
+  --c-link: #3987e5; --c-mpls: #d95926; --c-tunnel: #199e70; --c-sec: #c98500; --c-cust: #d55181; --c-pay: #0ca30c;
+  --ok: #5fd39a; --warn: #f0b45a; --bad: #ff8a80;
+}
+.mtu h2 { margin: 72px 0 8px; font-family: var(--serif); font-weight: 400; font-size: clamp(28px, 3.4vw, 38px); letter-spacing: -0.015em; line-height: 1.1; }
+.mtu h3 { margin: 0 0 10px; font: 600 12px var(--mono); letter-spacing: 0.06em; text-transform: uppercase; color: var(--muted); }
+.mtu .lead { max-width: 68ch; margin: 0 0 26px; color: var(--fg-2); font-size: 16px; }
+.mtu code, .mtu .num { font-family: var(--mono); }
+.mtu a.src { color: var(--muted); text-decoration: underline; text-underline-offset: 3px; text-decoration-color: var(--line); }
+.mtu a.src:hover { color: var(--accent); }
+
+.mtu-grid { display: grid; grid-template-columns: minmax(0, 5fr) minmax(0, 7fr); gap: 22px; align-items: start; }
+.mtu-card { padding: 24px; border: 1px solid var(--line); border-radius: var(--radius); background: var(--card); }
+.mtu-card + .mtu-card { margin-top: 18px; }
+
+/* Denetimler */
+.mtu-field { margin-bottom: 20px; }
+.mtu-field:last-child { margin-bottom: 0; }
+.mtu-field > label, .mtu-legend { display: block; margin-bottom: 8px; font-size: 13.5px; font-weight: 600; color: var(--fg); }
+.mtu-hint { margin: 6px 0 0; font-size: 12.5px; color: var(--muted); }
+.mtu-chips { display: flex; flex-wrap: wrap; gap: 6px; }
+.mtu-chip { padding: 7px 13px; border-radius: 999px; border: 1px solid var(--line); background: transparent; color: var(--fg-2); font: 500 13.5px var(--sans); cursor: pointer; transition: background 0.2s, color 0.2s, border-color 0.2s; }
+.mtu-chip:hover { border-color: var(--fg); }
+.mtu-chip[aria-pressed="true"] { background: var(--fg); color: var(--bg); border-color: var(--fg); }
+.mtu-seg { display: inline-flex; flex-wrap: wrap; padding: 3px; border-radius: 12px; border: 1px solid var(--line); gap: 2px; }
+.mtu-seg button { padding: 7px 12px; border: 0; border-radius: 9px; background: transparent; color: var(--fg-2); font: 500 13.5px var(--sans); cursor: pointer; }
+.mtu-seg button[aria-pressed="true"] { background: var(--accent); color: #fff; }
+[data-theme="dark"] .mtu-seg button[aria-pressed="true"] { color: #0a0e14; }
+.mtu-seg button:disabled { opacity: 0.4; cursor: not-allowed; }
+.mtu input[type="number"], .mtu select { width: 100%; padding: 10px 12px; border-radius: 12px; border: 1px solid var(--line); background: var(--bg); color: var(--fg); font: 500 15px var(--mono); }
+.mtu select { font-family: var(--sans); font-size: 14px; }
+.mtu input[type="number"]:focus-visible, .mtu select:focus-visible, .mtu button:focus-visible, .mtu summary:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
+.mtu-inline { display: flex; gap: 8px; align-items: center; flex-wrap: wrap; }
+.mtu-inline input[type="number"] { width: 130px; }
+.mtu-check { display: flex; gap: 9px; align-items: flex-start; margin: 7px 0; font-size: 14px; color: var(--fg-2); cursor: pointer; }
+.mtu-check input { margin-top: 3px; accent-color: var(--accent); }
+.mtu-check small { color: var(--muted); font: 12px var(--mono); white-space: nowrap; }
+
+/* Katman kartları */
+.mtu-layer { margin-top: 10px; padding: 14px 16px 12px; border: 1px solid var(--line); border-left: 4px solid var(--lc, var(--line)); border-radius: 14px; background: var(--bg); }
+.mtu-layer__head { display: flex; align-items: center; gap: 8px; margin-bottom: 8px; }
+.mtu-layer__name { flex: 1; font-weight: 600; font-size: 14.5px; }
+.mtu-layer__bytes { font: 12.5px var(--mono); color: var(--muted); }
+.mtu-icon { width: 30px; height: 30px; border-radius: 9px; border: 1px solid var(--line); background: transparent; color: var(--fg-2); font-size: 14px; cursor: pointer; }
+.mtu-icon:hover:not(:disabled) { border-color: var(--fg); color: var(--fg); }
+.mtu-icon:disabled { opacity: 0.3; cursor: default; }
+.mtu-layer .mtu-row { display: grid; grid-template-columns: 1fr 1fr; gap: 8px 12px; margin: 8px 0; }
+.mtu-layer .mtu-row label { font-size: 12.5px; color: var(--muted); }
+.mtu-layer .mtu-row select, .mtu-layer .mtu-row input { margin-top: 4px; padding: 8px 10px; font-size: 13.5px; }
+.mtu-empty { margin: 10px 0 0; font-size: 13.5px; color: var(--muted); }
+
+/* Sonuç */
+.mtu-stats { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 12px; }
+.mtu-stat { padding: 16px 18px; border-radius: 16px; border: 1px solid var(--line); background: var(--bg); }
+.mtu-stat.is-key { border-color: var(--accent); box-shadow: inset 0 0 0 1px var(--accent); }
+.mtu-stat__label { font-size: 12.5px; color: var(--muted); }
+.mtu-stat__value { margin-top: 4px; font: 500 34px/1.05 var(--mono); letter-spacing: -0.02em; color: var(--fg); font-variant-numeric: tabular-nums; }
+.mtu-stat__value small { font-size: 13px; font-weight: 400; color: var(--muted); letter-spacing: 0; }
+.mtu-stat__sub { margin-top: 6px; font-size: 12.5px; color: var(--fg-2); }
+.mtu-error { padding: 16px 18px; border-radius: 16px; border: 1px solid var(--bad); color: var(--bad); font-weight: 500; }
+
+/* Yığın: orantılı şerit + satır satır tablo */
+.mtu-bar { display: flex; gap: 2px; height: 26px; margin: 22px 0 6px; }
+.mtu-bar span { min-width: 5px; border-radius: 4px; background: var(--k); }
+.mtu-bar__cap { display: flex; justify-content: space-between; font: 11.5px var(--mono); color: var(--muted); }
+.mtu-legend-row { display: flex; flex-wrap: wrap; gap: 6px 14px; margin: 12px 0 4px; font-size: 12.5px; color: var(--fg-2); }
+.mtu-legend-row i, .mtu-stack i { display: inline-block; width: 10px; height: 10px; border-radius: 3px; background: var(--k); margin-right: 6px; }
+.mtu-stack { width: 100%; border-collapse: collapse; margin-top: 10px; font-size: 14px; }
+.mtu-stack th { text-align: left; padding: 8px 6px; font: 600 11.5px var(--mono); letter-spacing: 0.06em; text-transform: uppercase; color: var(--muted); border-bottom: 1px solid var(--line); }
+.mtu-stack td { padding: 8px 6px; border-bottom: 1px solid var(--line); color: var(--fg-2); vertical-align: baseline; }
+.mtu-stack td.num, .mtu-stack th.num { text-align: right; font-variant-numeric: tabular-nums; }
+.mtu-stack td.num { color: var(--fg); font-weight: 500; }
+.mtu-stack tfoot td { border-bottom: 0; font-weight: 600; color: var(--fg); }
+.mtu-stack .s { font-size: 12px; white-space: nowrap; }
+
+.mtu-notes { margin: 16px 0 0; padding: 0; list-style: none; }
+.mtu-notes li { position: relative; margin-top: 8px; padding: 10px 14px 10px 38px; border-radius: 12px; border: 1px solid var(--line); font-size: 13.5px; color: var(--fg-2); }
+.mtu-notes li::before { content: "i"; position: absolute; left: 13px; top: 10px; width: 17px; height: 17px; border-radius: 50%; border: 1.5px solid currentColor; font: 600 11px/14px var(--mono); text-align: center; color: var(--muted); }
+.mtu-notes li.is-warn { border-color: var(--warn); }
+.mtu-notes li.is-warn::before { content: "!"; color: var(--warn); }
+
+/* Üreticiler */
+.mtu-sum { width: 100%; border-collapse: collapse; margin: 6px 0 22px; font-size: 14.5px; }
+.mtu-sum th { text-align: left; padding: 9px 8px; font: 600 11.5px var(--mono); letter-spacing: 0.06em; text-transform: uppercase; color: var(--muted); border-bottom: 1px solid var(--line); }
+.mtu-sum td { padding: 11px 8px; border-bottom: 1px solid var(--line); color: var(--fg-2); }
+.mtu-sum td.num { font: 500 17px var(--mono); color: var(--fg); text-align: right; font-variant-numeric: tabular-nums; }
+.mtu-sum th.num { text-align: right; }
+.mtu-vrow { padding: 18px 0; border-top: 1px solid var(--line); }
+.mtu-vrow:first-child { border-top: 0; padding-top: 4px; }
+.mtu-vrow__top { display: flex; flex-wrap: wrap; align-items: baseline; gap: 6px 14px; }
+.mtu-vrow__what { font-weight: 600; font-size: 15px; }
+.mtu-vrow__val { margin-left: auto; font: 500 22px var(--mono); color: var(--fg); font-variant-numeric: tabular-nums; }
+.mtu-vrow p { margin: 8px 0 0; max-width: 78ch; font-size: 14px; color: var(--fg-2); }
+.mtu-vrow .srcs { margin-top: 8px; font-size: 12.5px; color: var(--muted); }
+.mtu-badge { display: inline-flex; align-items: center; gap: 5px; padding: 2px 9px; border-radius: 999px; border: 1px solid currentColor; font: 500 11.5px var(--mono); }
+.mtu-badge.doc { color: var(--ok); }
+.mtu-badge.derived { color: var(--warn); }
+.mtu-badge.unverified { color: var(--bad); }
+.mtu-cmd { position: relative; margin: 10px 0 0; padding: 12px 86px 12px 14px; border-radius: 12px; background: #080b10; color: #e4e9ef; font: 13px/1.6 var(--mono); white-space: pre-wrap; word-break: break-word; }
+.mtu-copy { position: absolute; top: 8px; right: 8px; padding: 4px 10px; border-radius: 8px; border: 1px solid rgba(228, 233, 239, 0.25); background: transparent; color: #e4e9ef; font: 500 12px var(--sans); cursor: pointer; }
+.mtu-copy:hover { background: rgba(228, 233, 239, 0.12); }
+.mtu-cmds { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 12px; }
+.mtu-cmds h3 { margin: 0; }
+
+/* Parçalanma */
+.mtu-frag-form { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 14px; align-items: end; }
+.mtu-verdict { margin: 18px 0 0; padding: 14px 16px; border-radius: 14px; border: 1px solid var(--line); font-size: 15px; color: var(--fg); }
+.mtu-verdict.ok { border-color: var(--ok); }
+.mtu-verdict.warn { border-color: var(--warn); }
+.mtu-verdict.bad { border-color: var(--bad); }
+.mtu-verdict small { display: block; margin-top: 6px; font-size: 13px; color: var(--fg-2); }
+.mtu-fbar { display: flex; gap: 2px; height: 22px; margin: 18px 0 4px; }
+.mtu-fbar span { display: flex; min-width: 8px; border-radius: 4px; overflow: hidden; }
+.mtu-fbar b { background: var(--c-link); }
+.mtu-fbar em { flex: 1; background: var(--c-pay); }
+
+.mtu details { margin-top: 12px; border: 1px solid var(--line); border-radius: 14px; padding: 4px 16px; }
+.mtu summary { padding: 10px 0; cursor: pointer; font-weight: 600; font-size: 14.5px; }
+.mtu details ul { margin: 0 0 14px; padding-left: 20px; font-size: 14px; color: var(--fg-2); }
+.mtu details li { margin: 5px 0; }
+.mtu-share { display: flex; flex-wrap: wrap; gap: 10px; align-items: center; margin-top: 18px; font-size: 13px; color: var(--muted); }
+.mtu-share button { padding: 8px 14px; border-radius: 999px; border: 1px solid var(--fg); background: transparent; color: var(--fg); font: 500 13.5px var(--sans); cursor: pointer; }
+.mtu-share button:hover { background: var(--fg); color: var(--bg); }
+.sr-only { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap; }
+
+@media (max-width: 900px) {
+  .mtu-grid { grid-template-columns: 1fr; }
+  .mtu-frag-form { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+  .mtu-cmds { grid-template-columns: 1fr; }
+}
+@media (max-width: 520px) {
+  .mtu-card { padding: 18px; }
+  .mtu-stat__value { font-size: 28px; }
+  .mtu-layer .mtu-row { grid-template-columns: 1fr; }
+  .mtu-vrow__val { margin-left: 0; width: 100%; }
+  .mtu-stack .s { display: none; }
+}

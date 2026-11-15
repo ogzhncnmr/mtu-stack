@@ -1,0 +1,107 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>MTU hesaplayıcı — Oğuzhan Canmar</title>
+  <meta name="description" content="MPLS, VXLAN, IPsec, SRv6 ve GTP-U başlıklarını üst üste koyup Nokia, Huawei, Cisco ve Juniper cihazlarına yazılacak MTU değerini hesaplayan araç." />
+  <meta name="theme-color" content="#f3efe6" />
+  <link rel="canonical" href="https://oguzhancanmar.com/araclar/mtu/" />
+  <meta property="og:url" content="https://oguzhancanmar.com/araclar/mtu/" />
+  <meta property="og:image" content="https://oguzhancanmar.com/assets/og.png" />
+  <meta property="og:image:width" content="1200" />
+  <meta property="og:image:height" content="630" />
+  <meta name="twitter:image" content="https://oguzhancanmar.com/assets/og.png" />
+  <meta property="og:title" content="MTU hesaplayıcı — Oğuzhan Canmar" />
+  <meta property="og:description" content="Başlıkları üst üste koy, hangi cihaza hangi MTU değerini yazacağını üreticiye göre gör." />
+  <meta name="twitter:card" content="summary_large_image" />
+  <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='8' fill='%232d4bff'/%3E%3Cpath d='M7 12h18M7 20h18M11 8l-4 4 4 4M21 16l4 4-4 4' stroke='%23fff' stroke-width='2.2' fill='none' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E" />
+  <script>document.documentElement.dataset.theme = localStorage.getItem("theme") || (matchMedia("(prefers-color-scheme: dark)").matches ? "dark" : "light");</script>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,300..700;1,9..144,300..700&family=Inter:wght@400;500;600&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="base.css?v=1" />
+  <link rel="stylesheet" href="mtu.css?v=1" />
+</head>
+<body>
+  <a class="skip" href="#icerik" data-i18n="skip">İçeriğe geç</a>
+  <header class="nav" id="nav">
+    <a href="../../" class="nav__logo"><span class="nav__mark">o</span><span class="nav__name">Oğuzhan Canmar</span></a>
+    <div class="nav__tools">
+      <a class="tool" data-site href="../../#iletisim" aria-label="İletişim" title="İletişim" data-i18n-aria="contact" data-i18n-title="contact">✉</a>
+      <button class="tool" id="langToggle" type="button" aria-label="Dili değiştir / Change language"><span data-lang-label>EN</span></button>
+      <button class="tool" id="themeToggle" type="button" aria-label="Temayı değiştir">
+        <svg class="i-sun" viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="4.2"/><path d="M12 2v2.5M12 19.5V22M4.2 4.2l1.8 1.8M18 18l1.8 1.8M2 12h2.5M19.5 12H22M4.2 19.8 6 18M18 6l1.8-1.8"/></svg>
+        <svg class="i-moon" viewBox="0 0 24 24" aria-hidden="true"><path d="M20.5 14.2A8.5 8.5 0 0 1 9.8 3.5a8.5 8.5 0 1 0 10.7 10.7Z"/></svg>
+      </button>
+    </div>
+  </header>
+
+  <main class="page mtu" id="icerik">
+    <a class="back" data-site href="../../" data-i18n="back">← Ana sayfa</a>
+    <div class="section__head">
+      <span class="section__index">⇄</span>
+      <h1 class="section__title" data-i18n="h1">Araçlar: <em>MTU hesaplayıcı</em></h1>
+    </div>
+    <p class="work__intro" data-i18n="intro">
+      Servisi seç, başlıkları üst üste gör. Aynı hat için Nokia, Huawei, Cisco ve Juniper'e
+      yazılacak değer farklıdır; araç her birini kaynağıyla birlikte verir.
+    </p>
+
+    <div class="mtu-grid">
+      <form class="mtu-card" id="controls" onsubmit="return false" aria-label="Hesap girdileri" data-i18n-aria="aControls"></form>
+      <div>
+        <div class="mtu-card" id="result" aria-live="polite"></div>
+        <div class="mtu-card" id="stack"></div>
+      </div>
+    </div>
+
+    <h2 data-i18n="hVendors">Cihaza yazılacak değerler</h2>
+    <p class="lead" data-i18n="pVendors">Her üretici MTU'yu farklı sayar: kimi Ethernet başlığını katar, kimi katmaz. Aşağıdaki değerler aynı hattın beş ayrı yazılışıdır.</p>
+    <div class="mtu-card" id="vendors"></div>
+
+    <h2 data-i18n="hVerify">Doğrulama</h2>
+    <p class="lead" data-i18n="pVerify">Parçalamaya izin vermeyen bir ping ile müşteri paketinin uçtan uca geçtiğini sınayın. Komutlardaki boyut, hesaplanan müşteri IP paketine göre ayarlanır.</p>
+    <div class="mtu-card" id="verify"></div>
+
+    <h2 data-i18n="hFrag">Parçalanma simülasyonu</h2>
+    <p class="lead" data-i18n="pFrag">Verilen MTU'dan büyük bir paketin başına ne geldiğini gösterir: IPv4'te parçalanır ya da DF biti yüzünden düşer, IPv6'da yönlendirici hiç parçalamaz.</p>
+    <div class="mtu-card" id="frag"></div>
+
+    <h2 data-i18n="hSrc">Kaynaklar ve güven düzeyi</h2>
+    <p class="lead" data-i18n="pSrc">Başlık boyutları RFC ve 3GPP belgelerinden, üretici kuralları resmi dokümanlardan alındı. Sürüme ve donanıma göre değişen ayrıntılar olabilir; canlı ağda uygulamadan önce kendi sürümünüzün dokümanıyla karşılaştırın.</p>
+    <div class="mtu-card" id="sources"></div>
+  </main>
+
+  <footer class="footer">
+    <span>© <span id="year"></span> Oğuzhan Canmar</span>
+    <a data-site href="../../" data-i18n="home">Ana sayfa</a>
+  </footer>
+
+  <script>
+  window.PAGE_EN = {
+    $title: "MTU calculator — Oğuzhan Canmar",
+    $desc: "Stack MPLS, VXLAN, IPsec, SRv6 and GTP-U headers and get the MTU value to configure on Nokia, Huawei, Cisco and Juniper devices.",
+    skip: "Skip to content",
+    contact: "Contact",
+    back: "← Home",
+    home: "Home",
+    h1: "Tools: <em>MTU calculator</em>",
+    intro: "Pick the service and see the headers stacked. The value you type for the same link differs on Nokia, Huawei, Cisco and Juniper; the tool gives each one with its source.",
+    aControls: "Calculation inputs",
+    hVendors: "Values to configure",
+    pVendors: "Every vendor counts MTU differently: some include the Ethernet header, some do not. The values below are five spellings of the same link.",
+    hVerify: "Verification",
+    pVerify: "Test that the customer packet passes end to end with a ping that forbids fragmentation. The size in each command follows the calculated customer IP packet.",
+    hFrag: "Fragmentation simulator",
+    pFrag: "Shows what happens to a packet larger than the given MTU: on IPv4 it is fragmented or dropped because of the DF bit; on IPv6 the router never fragments.",
+    hSrc: "Sources and confidence",
+    pSrc: "Header sizes come from RFCs and 3GPP documents, vendor rules from official documentation. Details can vary by release and hardware; compare with the documentation of your own release before applying anything on a live network."
+  };
+  </script>
+  <script src="shell.js?v=1"></script>
+  <script src="mtu-data.js?v=1"></script>
+  <script src="mtu-core.js?v=1"></script>
+  <script src="mtu-ui.js?v=1"></script>
+</body>
+</html>
